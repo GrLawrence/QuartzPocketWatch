@@ -37,14 +37,14 @@ namespace QuartzPocketWatch.Plugin
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
-            this.Conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Content"));
+            this.Conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Contents"));
         }
 
         protected override void ConfigureApplicationContainer(TinyIoC.TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
             var assembly = GetType().Assembly;
-            ResourceViewLocationProvider.RootNamespaces.Add(assembly,"QuartzWebModule.Views");
+            ResourceViewLocationProvider.RootNamespaces.Add(assembly,"QuartzPocketWatch.Plugin.Views");
         }
         
     }

@@ -2,6 +2,10 @@
 [Tt]humbs.db
 *.DS_Store
 
+#Debug
+Debug.sln
+QuartzHost/
+
 #Visual Studio files
 *.[Oo]bj
 *.user

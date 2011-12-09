@@ -64,18 +64,29 @@
     <Compile Include="Models\JobModel.cs" />
     <Compile Include="Models\SchedulerModel.cs" />
     <Compile Include="Models\TriggerModel.cs" />
-    <Compile Include="Modules\QuartzNancyModule.cs" />
+    <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebInterfacePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Views\home.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Contents\jquery-1.7.1.min.js" />
-    <Content Include="Contents\jquery-ui-1.8.16.custom.min.js" />
-    <Content Include="Contents\jquery.tmpl.min.js" />
-    <Content Include="Contents\knockout-1.2.1.js" />
+    <Content Include="Contents\jquery-1.7.1.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\jquery-ui-1.8.16.custom.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\jquery.tmpl.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\knockout-1.2.1.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
