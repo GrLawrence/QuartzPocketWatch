@@ -40,8 +40,6 @@ namespace QuartzPocketWatch.Plugin.Modules
 
             Get["/JobData/"] = x =>
                                    {
-                                       //var testJobData = new MyTestJobData {JobGroup = "Group", JobName = "jobName"};
-                                       //return Response.AsJson(testJobData);
                                        var schedulerModel = new SchedulerModel(WebInterfacePlugin.Scheduler);
                                        return Response.AsJson(schedulerModel);
                                    };
