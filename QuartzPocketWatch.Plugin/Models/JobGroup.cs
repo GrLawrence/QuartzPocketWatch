@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace QuartzPocketWatch.Plugin.Models
 {
@@ -33,6 +32,6 @@ namespace QuartzPocketWatch.Plugin.Models
         }
 
         public string GroupName { get; private set; }
-        public ReadOnlyCollection<JobModel> Jobs { get { return _jobs.AsReadOnly(); } }
+        public List<JobModel> Jobs { get { return _jobs; } }
     }
 }
