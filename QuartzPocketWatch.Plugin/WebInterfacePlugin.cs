@@ -30,7 +30,7 @@ namespace QuartzPocketWatch.Plugin
     {
         private string _pluginName;
         private static IScheduler _sched;
-        private NancyHost host;
+        private NancyHost _host;
 
         private static readonly ILog Log = LogManager.GetLogger("QuartzWeb");
 
@@ -41,24 +41,21 @@ namespace QuartzPocketWatch.Plugin
 
         public void Initialize(string pluginName, IScheduler sched)
         {
-            TinyIoC.TinyIoCContainer.Current.Register<RazorViewEngine>();
-            host = new NancyHost(new Uri("http://localhost:1234"));
-
-            host.Start();
-
             _sched = sched;
             _pluginName = pluginName;
         }
 
         public void Start()
         {
-            //not yet
+            TinyIoC.TinyIoCContainer.Current.Register<RazorViewEngine>();
+            _host = new NancyHost(new Uri("http://localhost:1234"));
+            _host.Start();
         }
 
         public void Shutdown()
         {
-            if(host != null)
-                host.Stop();
+            if(_host != null)
+                _host.Stop();
         }
     }
 }
