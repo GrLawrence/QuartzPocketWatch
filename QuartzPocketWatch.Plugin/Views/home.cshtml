@@ -99,6 +99,8 @@
 
 	    var jobGroups = [{ groupName: "group1"}];
 
+
+
 	    var scheduler = {
 	        jobGroupCollection: ko.observableArray(
 		   [
@@ -114,10 +116,11 @@
 			])
 	    };
 
+	    var viewModel = { quartzScheduler: ko.observable(scheduler) };
+
+
 	    // Activates knockout.js
 	    ko.applyBindings(scheduler);
-
-	    //$(document).ready(function () { $("tr:odd").addClass("odd"); });
 
 	    $(document).ready(function () { $("#accordion").accordion({ collapsible: true }); $('.accordion .head').hide(); });
 			

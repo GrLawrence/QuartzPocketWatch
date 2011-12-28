@@ -17,7 +17,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using Quartz;
 
@@ -49,7 +48,7 @@ namespace QuartzPocketWatch.Plugin.Models
             Description = jobDetail.Description;
             RequestsRecovery = jobDetail.RequestsRecovery;
             StoreDurable = jobDetail.Durable;
-            JobType = jobDetail.JobType;
+            JobType = jobDetail.JobType.ToString();
 
             System.Reflection.MemberInfo inf = jobDetail.JobType;
             object[] concurrentExecutionAttributes = inf.GetCustomAttributes(typeof(DisallowConcurrentExecutionAttribute), true);
@@ -67,9 +66,10 @@ namespace QuartzPocketWatch.Plugin.Models
         public bool ConcurrentExecutionAllowed { get; private set; }
         public bool RequestsRecovery { get; private set; }
         public bool StoreDurable { get; private set; }
-        public Type JobType { get; private set; }
+        public string JobType { get; private set; }
         public bool PersistJobDataAfterExecution { get; private set; }
         public IDictionary<string, object> JobDataMap { get; private set; }
         public IList<TriggerModel> TriggersForJob { get { return _triggersForJob.AsReadOnly(); } }
+
     }
 }

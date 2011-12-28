@@ -23,6 +23,12 @@ using QuartzPocketWatch.Plugin.Models;
 
 namespace QuartzPocketWatch.Plugin.Modules
 {
+    public class MyTestJobData
+    {
+        public string JobName { get; set; }
+        public string JobGroup { get; set; }
+    }
+
     public class MainModule : NancyModule
     {
         public MainModule()
@@ -33,10 +39,12 @@ namespace QuartzPocketWatch.Plugin.Modules
             };
 
             Get["/JobData/"] = x =>
-                                  {
-                                      var schedulerModel = new SchedulerModel(WebInterfacePlugin.Scheduler);
-                                      return Response.AsJson(schedulerModel);
-                                  };
+                                   {
+                                       //var testJobData = new MyTestJobData {JobGroup = "Group", JobName = "jobName"};
+                                       //return Response.AsJson(testJobData);
+                                       var schedulerModel = new SchedulerModel(WebInterfacePlugin.Scheduler);
+                                       return Response.AsJson(schedulerModel);
+                                   };
 
             Get["/FireJob/{JobGroup}/{JobName}"] = x => 
             {

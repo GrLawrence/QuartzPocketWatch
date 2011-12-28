@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Quartz;
 using Quartz.Impl.Matchers;
 
@@ -43,13 +42,13 @@ namespace QuartzPocketWatch.Plugin.Models
                     jobModels.Add(new JobModel(scheduler, jobKey));
                 }
 
-                _jobGroups.Add(new JobGroup(groupName,jobModels));
+                _jobGroups.Add(new JobGroup(groupName, jobModels));
             }
         }
 
-        public ReadOnlyCollection<JobGroup> JobGroups
+        public List<JobGroup> JobGroups
         {
-            get { return _jobGroups.AsReadOnly(); }
+            get { return _jobGroups; }
         }
     }
 }
