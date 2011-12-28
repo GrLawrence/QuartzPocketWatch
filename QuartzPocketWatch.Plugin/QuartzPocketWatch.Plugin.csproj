@@ -41,7 +41,7 @@
       <HintPath>..\packages\Nancy.Hosting.Self.0.9.0\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.ViewEngines.Razor">
-      <HintPath>..\packages\Nancy.Viewengines.Razor.0.9.0\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
+      <HintPath>..\Packages\Nancy.Viewengines.Razor.0.9.0\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
       <HintPath>..\lib\Quartz.dll</HintPath>

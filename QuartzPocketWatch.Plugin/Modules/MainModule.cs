@@ -32,6 +32,12 @@ namespace QuartzPocketWatch.Plugin.Modules
                 return View["home.cshtml", new SchedulerModel(WebInterfacePlugin.Scheduler)];
             };
 
+            Get["/JobData/"] = x =>
+                                  {
+                                      var schedulerModel = new SchedulerModel(WebInterfacePlugin.Scheduler);
+                                      return Response.AsJson(schedulerModel);
+                                  };
+
             Get["/FireJob/{JobGroup}/{JobName}"] = x => 
             {
                 WebInterfacePlugin.Scheduler.TriggerJob(new JobKey(x.JobName, x.JobGroup));
