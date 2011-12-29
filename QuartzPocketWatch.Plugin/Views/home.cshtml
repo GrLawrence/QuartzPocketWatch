@@ -10,6 +10,11 @@
                 font-family: Verdana;
             }
             
+            .jobGroupDiv
+            {
+                border: 3px solid #6e7d8d; 
+            }
+            
             .jobGroupTable  
             {
                 background: #2c2b2c; 
@@ -48,8 +53,9 @@
 	<div id="accordion" data-bind="template: 'jobGroups'"></div>
 
 	<script type="text/x-jquery-tmpl" id="jobGroups">
-		{{each jobGroupCollection}}
-		  <h3 cclass="jobGroupTitle"><a href="#"> Job Group: ${ groupName }</a></h3>
+		{{each JobGroups}}
+          <div class="jobGroupDiv">
+		  <h3 cclass="jobGroupTitle"><a href="#"> Job Group: ${ GroupName }</a></h3>
 		  <div>
 			<table border="0" cellspacing="0" cellpadding="5" cclass="jobGroupTable">
 			  <tr>
@@ -62,68 +68,33 @@
 				<th>Concurrent<br>ExecutionAllowed</th>
 				<th></th>
 			  </tr>
-			  {{each jobs}}
+			  {{each Jobs}}
 			  <tr>
-				<td>${jobName}</td>
-				<td>${description}</td>
-				<td>${requestsRecovery}</td>
-				<td>${storeDurable}</td>
-				<td>${jobType}</td>
-				<td>${persistJobDataAfterExecution}</td>
-				<td>${concurrentExecutionAllowed}</td>
-				<td><a href="/FireJob/${jobGroup}/${jobName}">Fire Job</a></td>
-				
+				<td>${JobName}</td>
+				<td>${Description}</td>
+				<td>${RequestsRecovery}</td>
+				<td>${StoreDurable}</td>
+				<td>${JobType}</td>
+				<td>${PersistJobDataAfterExecution}</td>
+				<td>${ConcurrentExecutionAllowed}</td>
+				<td><a href="/FireJob/${JobGroup}/${JobName}">Fire Job</a></td>
 			  </tr>
 			  {{/each}}
 			</table>
 			</div>
+          </div>
 		{{/each}}
 	</script>
+
+
 		
 	<script type="text/javascript">
-	    var jobGroup = function (name, jobModels) {
-	        this.groupName = name;
-	        this.jobs = jobModels;
-	    }
 
-	    var jobModel = function (jobName, jobGroup, description, requestsRecovery, storeDurable, jobType, persistJobDataAfterExecution, concurrentExecutionAllowed) {
-	        this.jobName = jobName;
-	        this.jobGroup = jobGroup;
-	        this.description = description;
-	        this.requestsRecovery = requestsRecovery;
-	        this.storeDurable = storeDurable;
-	        this.jobType = jobType;
-	        this.persistJobDataAfterExecution = persistJobDataAfterExecution;
-	        this.concurrentExecutionAllowed = concurrentExecutionAllowed;
-	    }
+	    $(document).ready(function () { setInterval(loadData, 2000); });
 
-	    var jobGroups = [{ groupName: "group1"}];
-
-
-
-	    var scheduler = {
-	        jobGroupCollection: ko.observableArray(
-		   [
-				new jobGroup("group1", [
-					new jobModel("job 1", "group1", "first job", true, false, "QuartzWeb.HelloWorld", true, false),
-					new jobModel("job 2", "group1", "second job", false, true, "Quartz.SecondJob", false, true)
-				]),
-				new jobGroup("group2", [
-					new jobModel("job 3", "group2", "first job", true, false, "QuartzWeb.HelloWorld", true, false),
-					new jobModel("job 4", "group2", "second job", false, true, "Quartz.SecondJob", false, true)
-				]),
-
-			])
-	    };
-
-	    var viewModel = { quartzScheduler: ko.observable(scheduler) };
-
-
-	    // Activates knockout.js
-	    ko.applyBindings(scheduler);
-
-	    $(document).ready(function () { $("#accordion").accordion({ collapsible: true }); $('.accordion .head').hide(); });
-			
+        function loadData() {
+            $.getJSON("/JobData", function (data) { ko.applyBindings(data); });
+        }
 
 	</script>		
 

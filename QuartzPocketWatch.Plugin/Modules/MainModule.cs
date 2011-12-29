@@ -17,6 +17,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using Nancy;
 using Quartz;
 using QuartzPocketWatch.Plugin.Models;
@@ -31,6 +32,7 @@ namespace QuartzPocketWatch.Plugin.Modules
 
     public class MainModule : NancyModule
     {
+        private List<string> availableJobs = new List<string> {"jobtype1", "jobtype2"};
         public MainModule()
         {
             Get["/"] = x =>
@@ -49,6 +51,8 @@ namespace QuartzPocketWatch.Plugin.Modules
                 WebInterfacePlugin.Scheduler.TriggerJob(new JobKey(x.JobName, x.JobGroup));
                 return Response.AsRedirect("/");
             };
+            
+            Get["/Jobs/AvailableJobs"] = x => { return Response.AsJson(availableJobs); };
         }
     }
 }
