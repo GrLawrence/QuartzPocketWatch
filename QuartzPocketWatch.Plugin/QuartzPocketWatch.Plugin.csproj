@@ -87,6 +87,9 @@
     <Content Include="Contents\knockout-1.2.1.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Contents\knockout-2.0.0.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Contents\knockout.mapping-latest.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
