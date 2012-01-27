@@ -17,7 +17,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using Quartz;
 
@@ -37,10 +36,10 @@ namespace QuartzPocketWatch.Plugin.Models
             MapValuesFromJobDetail(scheduler.GetJobDetail(jobKey));
         }
 
-        public JobModel(IJobDetail jobDetail)
-        {
-            MapValuesFromJobDetail(jobDetail);
-        }
+        //public JobModel(IJobDetail jobDetail)
+        //{
+        //    MapValuesFromJobDetail(jobDetail);
+        //}
 
         private void MapValuesFromJobDetail(IJobDetail jobDetail)
         {

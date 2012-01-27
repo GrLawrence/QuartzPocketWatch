@@ -35,6 +35,7 @@ namespace QuartzPocketWatch.Plugin.Models
             Priority = trigger.Priority;
             Description = trigger.Description;
             JobDataMap = trigger.JobDataMap;
+            NextFireTime = trigger.GetNextFireTimeUtc();
         }
 
         public string TriggerGroupName { get; private set; }
@@ -42,6 +43,7 @@ namespace QuartzPocketWatch.Plugin.Models
         public DateTimeOffset StartTime { get; private set; }
         public DateTimeOffset? EndTime { get; private set; }
         public DateTimeOffset? FinalFireTime { get; private set; }
+        public DateTimeOffset? NextFireTime { get; private set; }
         public int Priority { get; private set; }
         public string Description { get; private set; }
         public IDictionary<string, Object> JobDataMap { get; set; }

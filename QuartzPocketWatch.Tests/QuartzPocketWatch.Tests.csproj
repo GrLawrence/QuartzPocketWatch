@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\lib\C5.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.1.6.0\Lib\net40\FluentAssertions.dll</HintPath>
     </Reference>
@@ -43,6 +46,9 @@
     <Reference Include="pnunit.framework, Version=1.0.4109.34242, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\lib\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,10 +58,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fakes\FakeJob.cs" />
+    <Compile Include="Fakes\JobThatPersistJobData.cs" />
+    <Compile Include="Fakes\NonConcurrentJob.cs" />
+    <Compile Include="Fakes\RecoverableFakeJob.cs" />
+    <Compile Include="ModelTests\BaseJobModelTest.cs" />
+    <Compile Include="ModelTests\NonConcurrentJobModelTest.cs" />
+    <Compile Include="ModelTests\PersistentJobDataJobModel.cs" />
+    <Compile Include="ModelTests\RequestRecoveryJobModelTests.cs" />
+    <Compile Include="ModelTests\StandardJobModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuartzPocketWatch.Plugin\QuartzPocketWatch.Plugin.csproj">
+      <Project>{69ECDE18-0F40-4893-B72D-B7062B44DB74}</Project>
+      <Name>QuartzPocketWatch.Plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
