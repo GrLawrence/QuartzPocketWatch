@@ -50,7 +50,8 @@
         <script src="/Contents/knockout.mapping-latest.js" type="text/javascript"></script>
 </head>
 <body>
-
+<div>ReloadCount=<div id="counter"></div>
+    
 	<div class="nativeJobs" data-bind="foreach: JobGroups" >
 		  <h3 cclass="jobGroupTitle"><a href="#"> Job Group: <span data-bind="text: GroupName"></span></a></h3>
 			<table border="0" cellspacing="0" cellpadding="5" cclass="jobGroupTable">
@@ -83,17 +84,23 @@
 
 	<script type="text/javascript">
 	    var viewModel;
+	    var reloadCount = 0;
 
-	    //$(document).ready(function () { setInterval(reloadData, 2000); });
+	    $(document).ready(function () { setInterval(reloadData, 2000); });
 	    $(document).ready(loadData);
 
 	    function loadData() {
 	        $.getJSON("/JobData", function (data) { viewModel = ko.mapping.fromJS(data); ko.applyBindings(viewModel); });
+	        $("#counter").html(reloadCount);
 	    }
 
         function reloadData() {
-            //$.getJSON("/JobData", function (data) { ko.mapping.fromJS(data, viewModel); });
+            $.getJSON("/JobData", function (data) {
+                ko.mapping.fromJS(data, viewModel); reloadCount++;
+            });
+            $("#counter").html(reloadCount);
         }
+
 	</script>	
 </body>
 </html>
