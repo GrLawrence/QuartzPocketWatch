@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
         <title>Quartz Management</title>
@@ -63,7 +63,7 @@
 				<th>Job Type</th>
 				<th>Persist JobData<br>After Execution</th>
 				<th>Concurrent<br>ExecutionAllowed</th>
-				<th></th>
+				<th>Fire</th>
 			  </th>
               <tbody data-bind="foreach: Jobs">
 			  <tr>
@@ -85,21 +85,22 @@
 	<script type="text/javascript">
 	    var viewModel;
 	    var reloadCount = 0;
+	    var jobDataUrl = "/json/syncreply/Scheduler";
 
 	    $(document).ready(function () { setInterval(reloadData, 2000); });
 	    $(document).ready(loadData);
 
 	    function loadData() {
-	        $.getJSON("/JobData", function (data) { viewModel = ko.mapping.fromJS(data); ko.applyBindings(viewModel); });
+	        $.getJSON(jobDataUrl, function (data) { viewModel = ko.mapping.fromJS(data); ko.applyBindings(viewModel); });
 	        $("#counter").html(reloadCount);
 	    }
 
-        function reloadData() {
-            $.getJSON("/JobData", function (data) {
-                ko.mapping.fromJS(data, viewModel); reloadCount++;
-            });
-            $("#counter").html(reloadCount);
-        }
+	    function reloadData() {
+	        $.getJSON(jobDataUrl, function (data) {
+	            ko.mapping.fromJS(data, viewModel); reloadCount++;
+	        });
+	        $("#counter").html(reloadCount);
+	    }
 
 	</script>	
 </body>

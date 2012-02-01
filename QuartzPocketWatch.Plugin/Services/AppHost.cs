@@ -17,14 +17,23 @@
  */
 #endregion
 
-using Quartz;
+using Funq;
+using QuartzPocketWatch.Plugin.Services.Dto;
+using ServiceStack.WebHost.Endpoints;
 
-namespace QuartzPocketWatch.Tests.Fakes
+namespace QuartzPocketWatch.Plugin.Services
 {
-    public class FakeJob : IJob
+    public class AppHost : AppHostHttpListenerBase
     {
-        public void Execute(IJobExecutionContext context)
+        public AppHost () : base("Quartz plug-in HttpListener", typeof(SchedulerService).Assembly) { }
+
+        public override void Configure(Container container)
         {
+            container.Register(c => WebInterfacePlugin.Scheduler);
+
+            Routes
+                .Add<Scheduler>("/Scheduler")
+                .Add<FireJob>("/FireJob/{JobGroup}/{JobName}");
         }
     }
 }

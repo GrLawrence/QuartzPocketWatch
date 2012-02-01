@@ -19,10 +19,10 @@
 
 using System;
 using Common.Logging;
-using Nancy.Hosting.Self;
-using Nancy.ViewEngines.Razor;
 using Quartz;
 using Quartz.Spi;
+using QuartzPocketWatch.Plugin.Services;
+using ServiceStack.Configuration;
 
 namespace QuartzPocketWatch.Plugin
 {
@@ -30,9 +30,10 @@ namespace QuartzPocketWatch.Plugin
     {
         private string _pluginName;
         private static IScheduler _sched;
-        private NancyHost _host;
+        private AppHost _ssHost;
+        private readonly string _httpLocalhost = ConfigUtils.GetAppSetting("QuartzPocketWatchUrl");
 
-        private static readonly ILog Log = LogManager.GetLogger("QuartzWeb");
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WebInterfacePlugin).ToString());
 
         public static IScheduler Scheduler
         {
@@ -47,15 +48,19 @@ namespace QuartzPocketWatch.Plugin
 
         public void Start()
         {
-            TinyIoC.TinyIoCContainer.Current.Register<RazorViewEngine>();
-            _host = new NancyHost(new Uri("http://localhost:1234"));
-            _host.Start();
+            _ssHost = new AppHost();
+            _ssHost.Init();
+
+            _ssHost.Start(_httpLocalhost);
+
+            Log.Info(_pluginName + " started listening on: " + _httpLocalhost);
+            Log.Info(string.Format("AppHost Created at {0}, listening on {1}", DateTime.Now, _httpLocalhost));
         }
 
         public void Shutdown()
         {
-            if(_host != null)
-                _host.Stop();
+            if(_ssHost != null)
+                _ssHost.Stop();
         }
     }
 }

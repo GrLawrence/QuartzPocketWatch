@@ -18,13 +18,24 @@
 #endregion
 
 using Quartz;
+using QuartzPocketWatch.Plugin.Services.Dto;
+using ServiceStack.ServiceHost;
 
-namespace QuartzPocketWatch.Tests.Fakes
+namespace QuartzPocketWatch.Plugin.Services
 {
-    public class FakeJob : IJob
+    public class FireJobService : IService<FireJob>
     {
-        public void Execute(IJobExecutionContext context)
+        private readonly IScheduler _scheduler;
+
+        public FireJobService(IScheduler scheduler)
         {
+            _scheduler = scheduler;
+        }
+
+        public object Execute(FireJob request)
+        {
+            _scheduler.TriggerJob(new JobKey(request.JobName, request.JobGroup));
+            return new BasicResponse {Message = string.Empty, Success = true};
         }
     }
 }

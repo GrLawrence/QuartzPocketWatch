@@ -17,14 +17,11 @@
  */
 #endregion
 
-using Quartz;
-
-namespace QuartzPocketWatch.Tests.Fakes
+namespace QuartzPocketWatch.Plugin.Services.Dto
 {
-    public class FakeJob : IJob
+    public class BasicResponse
     {
-        public void Execute(IJobExecutionContext context)
-        {
-        }
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

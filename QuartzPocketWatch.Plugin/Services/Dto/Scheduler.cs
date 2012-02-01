@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * All content copyright Grant Pexsa, unless otherwise indicated. All rights reserved. 
  * 
@@ -17,14 +17,10 @@
  */
 #endregion
 
-using Quartz;
-
-namespace QuartzPocketWatch.Tests.Fakes
+namespace QuartzPocketWatch.Plugin.Services.Dto
 {
-    public class FakeJob : IJob
+    public class Scheduler
     {
-        public void Execute(IJobExecutionContext context)
-        {
-        }
+        public string Name { get; set; }
     }
 }
