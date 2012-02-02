@@ -69,6 +69,7 @@
     <Compile Include="ModelTests\SchedulerModelTests\WhenSchedulerHasASingleJobGroup.cs" />
     <Compile Include="ModelTests\JobModelTests\StandardJobModelTests.cs" />
     <Compile Include="ModelTests\TestBaseClasses\BaseSchedulerModelTest.cs" />
+    <Compile Include="ModelTests\TriggerTests\TriggerModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +81,7 @@
       <Name>QuartzPocketWatch.Plugin</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModelTests\TriggerTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>$(SolutionDir)Tools\nuget install $(ProjectDir)packages.config -o $(SolutionDir)Packages</PreBuildEvent>
