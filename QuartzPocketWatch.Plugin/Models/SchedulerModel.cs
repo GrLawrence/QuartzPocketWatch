@@ -42,7 +42,7 @@ namespace QuartzPocketWatch.Plugin.Models
                     jobModels.Add(new JobModel(scheduler, jobKey));
                 }
 
-                //_jobGroups.Add(new JobGroup(groupName, jobModels));
+                _jobGroups.Add(new JobGroup(groupName, jobModels));
             }
         }
 

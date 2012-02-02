@@ -20,8 +20,9 @@
 using NUnit.Framework;
 using QuartzPocketWatch.Tests.Fakes;
 using FluentAssertions;
+using QuartzPocketWatch.Tests.ModelTests.TestBaseClasses;
 
-namespace QuartzPocketWatch.Tests.ModelTests
+namespace QuartzPocketWatch.Tests.ModelTests.JobModelTests
 {
     public class StandardJobModelTests : BaseJobModelTest<FakeJob>
     {

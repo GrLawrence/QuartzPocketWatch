@@ -3,12 +3,12 @@ using NUnit.Framework;
 using QuartzPocketWatch.Tests.Fakes;
 using QuartzPocketWatch.Tests.ModelTests.TestBaseClasses;
 
-namespace QuartzPocketWatch.Tests.ModelTests
+namespace QuartzPocketWatch.Tests.ModelTests.SchedulerModelTests
 {
     [TestFixture]
     public class WhenSchedulerHasASingleJobGroup : BaseSchedulerModelTest
     {
-        public override void CustomizeContext()
+        protected override void CustomizeContext()
         {
             ScheduleJobWithDefaultTrigger<FakeJob>("group1", "job1");
         }

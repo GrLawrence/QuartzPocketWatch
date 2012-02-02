@@ -8,14 +8,11 @@ using QuartzPocketWatch.Plugin.Models;
 namespace QuartzPocketWatch.Tests.ModelTests.TestBaseClasses
 {
     [TestFixture]
-    public class BaseSchedulerModelTest
+    public abstract class BaseSchedulerModelTest
     {
-        protected const string JobName = "job1";
-        protected const string GroupName = "group1";
-        protected const string JobDescription = "Hello world job";
-        protected const string TriggerName = "trigger1";
+        private const string TriggerName = "trigger1";
         private IScheduler _sched;
-        protected ISchedulerFactory SchedulerFactory = new StdSchedulerFactory();
+        private readonly ISchedulerFactory _schedulerFactory = new StdSchedulerFactory();
 
         protected SchedulerModel Context;
 
@@ -24,19 +21,17 @@ namespace QuartzPocketWatch.Tests.ModelTests.TestBaseClasses
         {
             string schedName = GetType().ToString();
             DirectSchedulerFactory.Instance.CreateScheduler(schedName, schedName, new SimpleThreadPool(), new RAMJobStore());
-            _sched = SchedulerFactory.GetScheduler(GetType().ToString());
+            _sched = _schedulerFactory.GetScheduler(GetType().ToString());
 
             CustomizeContext();
-
-            Context = new SchedulerModel(_sched);
         }
 
-        public virtual void CustomizeContext()
+        protected virtual void CustomizeContext()
         {
             
         }
 
-        public void ScheduleJobWithDefaultTrigger<T>(string jobGroupName, string jobName) where T:IJob
+        protected void ScheduleJobWithDefaultTrigger<T>(string jobGroupName, string jobName) where T:IJob
         {
             JobBuilder builder = JobBuilder.Create<T>()
                 .WithIdentity(jobName, jobGroupName)
@@ -53,7 +48,9 @@ namespace QuartzPocketWatch.Tests.ModelTests.TestBaseClasses
                 .Build();
 
             _sched.ScheduleJob(job, trigger);
-        }
 
+            Context = new SchedulerModel(_sched);
+
+        }
     }
 }
