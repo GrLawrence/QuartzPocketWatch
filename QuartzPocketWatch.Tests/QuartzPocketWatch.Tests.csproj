@@ -62,11 +62,13 @@
     <Compile Include="Fakes\JobThatPersistJobData.cs" />
     <Compile Include="Fakes\NonConcurrentJob.cs" />
     <Compile Include="Fakes\RecoverableFakeJob.cs" />
-    <Compile Include="ModelTests\BaseJobModelTest.cs" />
-    <Compile Include="ModelTests\NonConcurrentJobModelTest.cs" />
-    <Compile Include="ModelTests\PersistentJobDataJobModel.cs" />
-    <Compile Include="ModelTests\RequestRecoveryJobModelTests.cs" />
-    <Compile Include="ModelTests\StandardJobModelTests.cs" />
+    <Compile Include="ModelTests\TestBaseClasses\BaseJobModelTest.cs" />
+    <Compile Include="ModelTests\JobModelTests\NonConcurrentJobModelTest.cs" />
+    <Compile Include="ModelTests\JobModelTests\PersistentJobDataJobModel.cs" />
+    <Compile Include="ModelTests\JobModelTests\RequestRecoveryJobModelTests.cs" />
+    <Compile Include="ModelTests\SchedulerModelTests\WhenSchedulerHasASingleJobGroup.cs" />
+    <Compile Include="ModelTests\JobModelTests\StandardJobModelTests.cs" />
+    <Compile Include="ModelTests\TestBaseClasses\BaseSchedulerModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +79,9 @@
       <Project>{69ECDE18-0F40-4893-B72D-B7062B44DB74}</Project>
       <Name>QuartzPocketWatch.Plugin</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModelTests\TriggerTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

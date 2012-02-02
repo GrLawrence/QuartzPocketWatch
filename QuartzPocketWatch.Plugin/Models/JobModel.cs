@@ -36,11 +36,6 @@ namespace QuartzPocketWatch.Plugin.Models
             MapValuesFromJobDetail(scheduler.GetJobDetail(jobKey));
         }
 
-        //public JobModel(IJobDetail jobDetail)
-        //{
-        //    MapValuesFromJobDetail(jobDetail);
-        //}
-
         private void MapValuesFromJobDetail(IJobDetail jobDetail)
         {
             JobName = jobDetail.Key.Name;
