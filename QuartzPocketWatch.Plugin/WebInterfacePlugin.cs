@@ -52,6 +52,20 @@ namespace QuartzPocketWatch.Plugin
             _sched = sched;
             _pluginName = pluginName;
             LoadJobNames();
+            AddJobsToScheduler();
+        }
+
+        private void AddJobsToScheduler()
+        {
+            foreach (Type jobType in AvailableJobTypes)
+            {
+                IJobDetail job = JobBuilder.Create(jobType)
+                    .WithIdentity(jobType.FullName.Substring(jobType.FullName.LastIndexOf(".")+1), "AllJobs")
+                    .WithDescription("Hello world job")
+                    .Build();
+
+                _sched.AddJob(job, true);
+            }
         }
 
         public void Start()
