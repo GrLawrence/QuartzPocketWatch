@@ -33,7 +33,8 @@ namespace QuartzPocketWatch.Plugin.Services
 
             Routes
                 .Add<Scheduler>("/Scheduler")
-                .Add<FireJob>("/FireJob/{JobGroup}/{JobName}");
+                .Add<FireJob>("/FireJob/{JobGroup}/{JobName}")
+                .Add<JobTypeList>("/JobTypeList");
         }
     }
 }

@@ -18,6 +18,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Web;
 using Common.Logging;
 using Quartz;
 using Quartz.Spi;
@@ -35,6 +40,8 @@ namespace QuartzPocketWatch.Plugin
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(WebInterfacePlugin).ToString());
 
+        public static readonly List<Type> AvailableJobTypes = new List<Type>();
+
         public static IScheduler Scheduler
         {
             get { return _sched; }
@@ -44,6 +51,7 @@ namespace QuartzPocketWatch.Plugin
         {
             _sched = sched;
             _pluginName = pluginName;
+            LoadJobNames();
         }
 
         public void Start()
@@ -61,6 +69,31 @@ namespace QuartzPocketWatch.Plugin
         {
             if(_ssHost != null)
                 _ssHost.Stop();
+        }
+
+        private static void LoadJobNames()
+        {
+            AvailableJobTypes.Clear();
+
+            if (HttpContext.Current != null) return;
+
+            string location = Assembly.GetExecutingAssembly().Location;
+            string currentPath = location.Substring(0, location.LastIndexOf("\\"));
+
+            foreach (string assemblyPath in Directory.EnumerateFiles(currentPath))
+            {
+                string fileName = assemblyPath.Substring(assemblyPath.LastIndexOf("\\") + 1);
+
+                if (fileName.StartsWith("System.")) continue;
+                if (!fileName.EndsWith(".dll") && !fileName.EndsWith(".exe")) continue;
+
+                var assembly = Assembly.LoadFrom(fileName);
+
+                foreach (var t in assembly.GetTypes().Where(t => t.IsJob()))
+                {
+                    AvailableJobTypes.Add(t);
+                }
+            }
         }
     }
 }
