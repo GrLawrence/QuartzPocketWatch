@@ -1,107 +1,101 @@
-﻿<!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-        <title>Quartz Management</title>
-        <style type="text/css">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+    <title>Quartz PocketWatch</title>
+	<link type="text/css" href="Contents/css/dark-hive/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+    <style type="text/css">
+            .check 
+            {
+                background-image: url(Contents/images/Check.png);
+                width: 32px;
+                height: 32px;
+            }
+            
+            .showElement
+            {
+                visibility: hidden;
+            }
+            
             body  
             {
                 background: #1c1a1c; 
                 color: #ffffff; 
                 font-family: Verdana;
             }
-            
-            .jobGroupDiv
-            {
-                border: 3px solid #6e7d8d; 
-            }
-            
-            .jobGroupTable  
-            {
-                background: #2c2b2c; 
-                border: 3px solid #6e7d8d; 
-                border-radius: 5px; 
-                box-shadow: 2px 2px 1px #CCCCCC;  
-                font-size: 11px;
-            }
-            
-            .jobGroupTitle
-            {
-                text-align: left; 
-                font-size: 13px; 
-                border: 1px solid #812c06;
-                border-radius: 5px;
-                background-color: #812c06;
-            }
-            
-            .odd  
-            {
-                background: #343234; 
-                color: #ffffff; 
-            }
-            
-            .jobTitle 
-            {
-                font-size: 12px;
-            }
-        </style>
-        <script src="/Contents/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <script src="/Contents/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
-        <script src="/Contents/knockout-2.0.0.js" type="text/javascript"></script>
-        <script src="/Contents/knockout.mapping-latest.js" type="text/javascript"></script>
+
+    </style>
+    <script src="Contents/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+	<script src="Contents/js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+    <script src="Contents/js/knockout-2.1.0.js" type="text/javascript"></script>
 </head>
 <body>
-<div>ReloadCount=<div id="counter"></div>
-    
-	<div class="nativeJobs" data-bind="foreach: JobGroups" >
-		  <h3 cclass="jobGroupTitle"><a href="#"> Job Group: <span data-bind="text: GroupName"></span></a></h3>
-			<table border="0" cellspacing="0" cellpadding="5" cclass="jobGroupTable">
-			  <th>
-				<th>Job Name</th>
-				<th>description</th>
-				<th>Requests<br>Recovery</th>
-				<th>Store<br>Durable</th>
-				<th>Job Type</th>
-				<th>Persist JobData<br>After Execution</th>
-				<th>Concurrent<br>ExecutionAllowed</th>
-				<th>Fire</th>
-			  </th>
-              <tbody data-bind="foreach: Jobs">
-			  <tr>
-				<td><span data-bind="text: JobName"></span></td>
-				<td><span data-bind="text: Description"></span></td>
-				<td><span data-bind="text: RequestsRecovery"></span></td>
-				<td><span data-bind="text: StoreDurable"></span></td>
-				<td><span data-bind="text: JobType"></span></td>
-				<td><span data-bind="text: PersistJobDataAfterExecution"></span></td>
-				<td><span data-bind="text: ConcurrentExecutionAllowed"></span></td>
-				<td>
-                <a data-bind='attr: { href: "/FireJob/" + JobGroup + "/" + JobName, text: JobGroup }'> </a>
-			  </tr>
-              </tbody>
-			</table>
-          </div>
+    <div>
+        <br />
+	    <div id="tabs">
+	 
+		    <ul data-bind="template: { name: 'jobTab-template', foreach: JobGroups}"></ul>
+		    <div data-bind="template: { name: 'jobPane-template', foreach: JobGroups}"></div>
+	    </div>
     </div>
+
+    <script type="text/html" id="jobTab-template" >
+        <li><a data-bind="attr: {href: '#' + GroupName }, text: GroupName"></a></li>
+    </script>
+	
+    <script type="text/html" id="jobPane-template" >
+        <div data-bind="attr: {id: GroupName}">
+        <table>
+          <thead>
+            <th>Job Name</th>
+            <th>Description</th>
+            <th>Concurrent</th>
+            <th>JobType</th>
+            <th>Execute Job</th>
+          </thead>
+          <tbody data-bind="template: { name: 'jobRow-template', foreach: Jobs}" >
+          </tbody>
+        </table>
+        </div>
+    </script>
+
+    <script type="text/html" id="jobRow-template" >
+      <tr>
+        <td data-bind="text: JobName" ></td>
+        <td data-bind="text: Description" ></td>
+        <td align="center" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
+        <td data-bind="text: JobType" ></td>
+        <td><a href="#">Execute</a> </td>
+      </tr>
+    </script>
+
 
 	<script type="text/javascript">
 	    var viewModel;
-	    var reloadCount = 0;
+	    //	    var reloadCount = 0;
 	    var jobDataUrl = "/json/syncreply/Scheduler";
 
 	    $(document).ready(function () { setInterval(reloadData, 2000); });
 	    $(document).ready(loadData);
 
 	    function loadData() {
-	        $.getJSON(jobDataUrl, function (data) { viewModel = ko.mapping.fromJS(data); ko.applyBindings(viewModel); });
-	        $("#counter").html(reloadCount);
+	        $.getJSON(jobDataUrl, function (data) {
+	            viewModel = { JobGroups: ko.observable(data.JobGroups) };
+	            ko.applyBindings(viewModel);
+	            $("#tabs").tabs();
+	        });
 	    }
 
 	    function reloadData() {
-	        $.getJSON(jobDataUrl, function (data) {
-	            ko.mapping.fromJS(data, viewModel); reloadCount++;
-	        });
-	        $("#counter").html(reloadCount);
+	        //find job2 and rename
+
+	        //	        $.getJSON(jobDataUrl, function (data) {
+	        //	            ko.mapping.fromJS(data, viewModel); reloadCount++;
+	        //	        });
 	    }
 
+	    ko.applyBindings(viewModel);
+	
 	</script>	
 </body>
 </html>
