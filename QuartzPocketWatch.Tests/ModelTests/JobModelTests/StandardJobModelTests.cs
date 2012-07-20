@@ -73,5 +73,13 @@ namespace QuartzPocketWatch.Tests.ModelTests.JobModelTests
         {
             Context.PersistJobDataAfterExecution.Should().BeFalse();
         }
+
+        [Test]
+        public void FireUrlIsCorrect()
+        {
+            Context.FireUrl.Equals("/FireJob/" + Context.JobGroup + "/" + Context.JobName);
+        }
+
+
     }
 }

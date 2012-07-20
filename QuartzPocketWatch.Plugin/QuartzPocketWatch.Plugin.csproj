@@ -95,25 +95,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Contents\jquery-1.7.1.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contents\jquery-ui-1.8.16.custom.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contents\jquery.tmpl.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contents\knockout-1.2.1.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contents\knockout-2.0.0.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Contents\knockout-2.1.0.js" />
-    <Content Include="Contents\knockout.mapping-latest.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Contents\css\dark-hive\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-icons_222222_256x240.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Contents\css\dark-hive\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Contents\css\dark-hive\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Contents\images\Check.png" />
+    <Content Include="Contents\js\jquery-1.7.2.min.js" />
+    <Content Include="Contents\js\jquery-ui-1.8.21.custom.min.js" />
+    <Content Include="Contents\js\knockout-2.1.0.js" />
     <Content Include="Dashboard.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

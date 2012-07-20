@@ -17,6 +17,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Quartz;
 
@@ -40,6 +41,7 @@ namespace QuartzPocketWatch.Plugin.Models
         {
             JobName = jobDetail.Key.Name;
             JobGroup = jobDetail.Key.Group;
+            FireUrl = "/FireJob/" + JobGroup + "/" + JobName;
             Description = jobDetail.Description;
             RequestsRecovery = jobDetail.RequestsRecovery;
             StoreDurable = jobDetail.Durable;
@@ -66,5 +68,9 @@ namespace QuartzPocketWatch.Plugin.Models
         public IDictionary<string, object> JobDataMap { get; private set; }
         public IList<TriggerModel> TriggersForJob { get { return _triggersForJob.AsReadOnly(); } }
 
+        public string FireUrl
+        {
+            get; private set;
+        }
     }
 }

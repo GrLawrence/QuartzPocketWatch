@@ -1,59 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
-    <title>Quartz PocketWatch</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+    <title>Quartz Management</title>
 	<link type="text/css" href="Contents/css/dark-hive/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
     <style type="text/css">
-            .check 
-            {
-                background-image: url(Contents/images/Check.png);
-                width: 32px;
-                height: 32px;
-            }
-            
-            .showElement
-            {
-                visibility: hidden;
-            }
-            
-            body  
-            {
-                background: #1c1a1c; 
-                color: #ffffff; 
-                font-family: Verdana;
-            }
 
-    </style>
+        body 
+        {
+            background-color: #000000;
+        }
+        
+        .check 
+        {
+            background-image: url(Contents/images/Check.png);
+            width: 32px;
+            height: 32px;
+        }
+        
+        .jobTable
+        {
+            
+        }
+        
+        .jobTable td
+        {
+            vertical-align: top;
+        }
+            
+        </style>
     <script src="Contents/js/jquery-1.7.2.min.js" type="text/javascript"></script>
 	<script src="Contents/js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
     <script src="Contents/js/knockout-2.1.0.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function fireJob(element) {
+            //get href off element and call ajax
+        }
+    </script>
 </head>
 <body>
-    <div>
-        <br />
-	    <div id="tabs">
+<div>
+     <br />
+	 <div id="tabs">
 	 
-		    <ul data-bind="template: { name: 'jobTab-template', foreach: JobGroups}"></ul>
-		    <div data-bind="template: { name: 'jobPane-template', foreach: JobGroups}"></div>
-	    </div>
-    </div>
+		<ul data-bind="template: { name: 'jobTab-template', foreach: JobGroups}"></ul>
+		<div data-bind="template: { name: 'jobPane-template', foreach: JobGroups}"></div>
+	 </div>
+</div>
 
     <script type="text/html" id="jobTab-template" >
         <li><a data-bind="attr: {href: '#' + GroupName }, text: GroupName"></a></li>
     </script>
-	
+
+<!--	<tbody data-bind="template: { name: 'jobRow-template', foreach: Jobs}" > -->
+
     <script type="text/html" id="jobPane-template" >
         <div data-bind="attr: {id: GroupName}">
-        <table>
+        <table class="jobTable">
           <thead>
             <th>Job Name</th>
             <th>Description</th>
             <th>Concurrent</th>
             <th>JobType</th>
             <th>Execute Job</th>
+            <th>Triggers</th>
           </thead>
-          <tbody data-bind="template: { name: 'jobRow-template', foreach: Jobs}" >
+          <tbody data-bind="foreach: Jobs" >
+
+          <tr>
+            <td data-bind="text: JobName" ></td>
+            <td data-bind="text: Description" ></td>
+            <td align="center" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
+            <td data-bind="text: JobType" ></td>
+            <td><a class="fireLink" data-bind="attr: {href: FireUrl}">Execute</a></td>
+            <td data-bind="foreach: TriggersForJob"  >
+                <div class="accordion" >
+                    <h3><a href="#" data-bind="text: TriggerName"></a></h3>
+                    <div>
+                        <ul>
+                          <li>Start Time: <span data-bind="text: StartTime"></span></li>
+                          <li>Next Fire Time: <span data-bind="text: NextFireTime"></span></li>
+                        </ul>
+                    </div>
+                </div>   
+            </td>
+          </tr>
+
+
+          </tbody>
           </tbody>
         </table>
         </div>
@@ -69,7 +103,6 @@
       </tr>
     </script>
 
-
 	<script type="text/javascript">
 	    var viewModel;
 	    //	    var reloadCount = 0;
@@ -82,8 +115,24 @@
 	        $.getJSON(jobDataUrl, function (data) {
 	            viewModel = { JobGroups: ko.observable(data.JobGroups) };
 	            ko.applyBindings(viewModel);
-	            $("#tabs").tabs();
+	            applyWidgits();
 	        });
+	    }
+
+	    function applyWidgits() {
+//	        $(".accordion").accordion({ collapsible: true });
+	        $("#tabs").tabs();
+	        jQuery('.fireLink').bind('click', function (e) {
+	            //alert(e.target);
+	            $.ajax(
+                    {
+                        url: e.target.href
+                        //,success: function () { $(e.target).show(); }
+                    });
+
+	            e.preventDefault();
+	        });
+
 	    }
 
 	    function reloadData() {
@@ -93,9 +142,7 @@
 	        //	            ko.mapping.fromJS(data, viewModel); reloadCount++;
 	        //	        });
 	    }
-
 	    ko.applyBindings(viewModel);
-	
 	</script>	
 </body>
 </html>
