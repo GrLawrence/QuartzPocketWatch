@@ -17,6 +17,8 @@
  */
 #endregion
 
+using System;
+using Common.Logging;
 using Quartz;
 using QuartzPocketWatch.Plugin.Services.Dto;
 using ServiceStack.ServiceHost;
@@ -26,6 +28,7 @@ namespace QuartzPocketWatch.Plugin.Services
     public class FireJobService : IService<FireJob>
     {
         private readonly IScheduler _scheduler;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(WebInterfacePlugin).ToString());
 
         public FireJobService(IScheduler scheduler)
         {
@@ -34,8 +37,20 @@ namespace QuartzPocketWatch.Plugin.Services
 
         public object Execute(FireJob request)
         {
-            _scheduler.TriggerJob(new JobKey(request.JobName, request.JobGroup));
-            return new BasicResponse {Message = string.Empty, Success = true};
+            bool success = false;
+
+            try
+            {
+                _scheduler.TriggerJob(new JobKey(request.JobName, request.JobGroup));
+                Log.Info("job " + request.JobName + " in group " + request.JobGroup + " fired successfully");
+                success = true;
+            }
+            catch
+            {
+                Log.Error("job " + request.JobName + " in group " + request.JobGroup + " could not be fired");
+            }
+
+            return new BasicResponse {Message = string.Empty, Success = success};
         }
     }
 }

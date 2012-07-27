@@ -8,24 +8,52 @@
 
         body 
         {
+            color: White;
+            font-family: Verdana;
             background-color: #000000;
+        }
+        
+        .siteHeader
+        {
+            font-size: 28px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        .loadingIcon
+        {
+            display: none;
+            float: right;
         }
         
         .check 
         {
             background-image: url(Contents/images/Check.png);
+            background-position: center;
             width: 32px;
             height: 32px;
+            text-align: center;
         }
         
         .jobTable
         {
-            
+            width: 100%;            
         }
         
         .jobTable td
         {
             vertical-align: top;
+        }
+        
+        .jobTable th
+        {
+            text-align: left;
+        }
+        
+        .concurrencyColumn 
+        {
+            text-align: center;
         }
             
         </style>
@@ -40,19 +68,17 @@
 </head>
 <body>
 <div>
-     <br />
-	 <div id="tabs">
-	 
+     <div class="siteHeader">QuartzPocketWatch <div class="loadingIcon"><img src="Contents/images/loading_icon.gif" /></div></div>
+	 <div id="tabs">	 
 		<ul data-bind="template: { name: 'jobTab-template', foreach: JobGroups}"></ul>
 		<div data-bind="template: { name: 'jobPane-template', foreach: JobGroups}"></div>
 	 </div>
+     <div><input type="button" onclick="reloadData();" /></div>
 </div>
 
     <script type="text/html" id="jobTab-template" >
         <li><a data-bind="attr: {href: '#' + GroupName }, text: GroupName"></a></li>
     </script>
-
-<!--	<tbody data-bind="template: { name: 'jobRow-template', foreach: Jobs}" > -->
 
     <script type="text/html" id="jobPane-template" >
         <div data-bind="attr: {id: GroupName}">
@@ -70,7 +96,7 @@
           <tr>
             <td data-bind="text: JobName" ></td>
             <td data-bind="text: Description" ></td>
-            <td align="center" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
+            <td align="center" class="concurrencyColumn" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
             <td data-bind="text: JobType" ></td>
             <td><a class="fireLink" data-bind="attr: {href: FireUrl}">Execute</a></td>
             <td data-bind="foreach: TriggersForJob"  >
@@ -86,7 +112,6 @@
             </td>
           </tr>
 
-
           </tbody>
           </tbody>
         </table>
@@ -97,7 +122,7 @@
       <tr>
         <td data-bind="text: JobName" ></td>
         <td data-bind="text: Description" ></td>
-        <td align="center" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
+        <td ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
         <td data-bind="text: JobType" ></td>
         <td><a href="#">Execute</a> </td>
       </tr>
@@ -108,7 +133,7 @@
 	    //	    var reloadCount = 0;
 	    var jobDataUrl = "/json/syncreply/Scheduler";
 
-	    $(document).ready(function () { setInterval(reloadData, 2000); });
+	    //$(document).ready(function () { setInterval(reloadData, 2000); });
 	    $(document).ready(loadData);
 
 	    function loadData() {
@@ -120,29 +145,55 @@
 	    }
 
 	    function applyWidgits() {
-//	        $(".accordion").accordion({ collapsible: true });
+	        $(".accordion").accordion({ collapsible: true });
 	        $("#tabs").tabs();
 	        jQuery('.fireLink').bind('click', function (e) {
-	            //alert(e.target);
 	            $.ajax(
                     {
                         url: e.target.href
-                        //,success: function () { $(e.target).show(); }
                     });
-
 	            e.preventDefault();
 	        });
-
 	    }
 
 	    function reloadData() {
-	        //find job2 and rename
 
-	        //	        $.getJSON(jobDataUrl, function (data) {
-	        //	            ko.mapping.fromJS(data, viewModel); reloadCount++;
-	        //	        });
-	    }
-	    ko.applyBindings(viewModel);
+	        $(".loadingIcon").show();
+
+	        $.getJSON(jobDataUrl, function (data) {
+	            viewModel.JobGroups(data.JobGroups);
+	            alert("pausing");
+	            //applyWidgits();
+	        });
+	        
+            $(".loadingIcon").hide();
+
+        }
+
+        function pausecomp(millis) {
+            var date = new Date();
+            var curDate = null;
+
+            do { curDate = new Date(); }
+            while (curDate - date < millis);
+        }
+
+        //ko.applyBindings(viewModel);
+
+        ko.bindingHandlers.jqTabs = {
+            update: function (element, valueAccessor, allBindingsAccessor) {
+                var dependency = ko.utils.unwrapObservable(valueAccessor()),
+           currentIndex = $(element).tabs("option", "selected") || 0,
+           config = ko.utils.unwrapObservable(allBindingsAccessor().jqTabOptions) || {};
+                alert("unbinding");
+
+                //make sure that elements are set from template before calling tabs API
+                setTimeout(function () {
+                    $(element).tabs("destroy").tabs(config).tabs("option", "selected", currentIndex);
+                }, 0);
+            }
+        };
+
 	</script>	
 </body>
 </html>

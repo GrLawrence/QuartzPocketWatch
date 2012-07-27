@@ -111,6 +111,9 @@
     <Content Include="Contents\css\dark-hive\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Contents\css\dark-hive\jquery-ui-1.8.21.custom.css" />
     <Content Include="Contents\images\Check.png" />
+    <Content Include="Contents\images\loading_icon.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Contents\js\jquery-1.7.2.min.js" />
     <Content Include="Contents\js\jquery-ui-1.8.21.custom.min.js" />
     <Content Include="Contents\js\knockout-2.1.0.js" />
