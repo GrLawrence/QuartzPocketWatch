@@ -69,11 +69,11 @@
 <body>
 <div>
      <div class="siteHeader">QuartzPocketWatch <div class="loadingIcon"><img src="Contents/images/loading_icon.gif" /></div></div>
-	 <div id="tabs">	 
+	 <div data-bind="jqTabs: JobGroups" >	 
 		<ul data-bind="template: { name: 'jobTab-template', foreach: JobGroups}"></ul>
 		<div data-bind="template: { name: 'jobPane-template', foreach: JobGroups}"></div>
 	 </div>
-     <div><input type="button" onclick="reloadData();" /></div>
+     <div><input type="button" data-bind="click: refresh" onclick="reloadData();" /></div>
 </div>
 
     <script type="text/html" id="jobTab-template" >
@@ -99,8 +99,8 @@
             <td align="center" class="concurrencyColumn" ><div class="check" data-bind="css: {check: ConcurrentExecutionAllowed}"></div></td>
             <td data-bind="text: JobType" ></td>
             <td><a class="fireLink" data-bind="attr: {href: FireUrl}">Execute</a></td>
-            <td data-bind="foreach: TriggersForJob"  >
-                <div class="accordion" >
+            <td >
+                <div data-bind="foreach: TriggersForJob, accordion: {collapsible: true}"  >
                     <h3><a href="#" data-bind="text: TriggerName"></a></h3>
                     <div>
                         <ul>
@@ -129,18 +129,78 @@
     </script>
 
 	<script type="text/javascript">
-	    var viewModel;
+	    var viewModel = {
+	        refresh: function () {
+	            $(".loadingIcon").show();
+
+	            $.getJSON(jobDataUrl, function (data) {
+	                viewModel.JobGroups(data.JobGroups);
+	                //alert("refreshing");
+	                //applyWidgits();
+	            });
+
+	            $(".loadingIcon").hide();
+	        }
+	    };
+
 	    //	    var reloadCount = 0;
 	    var jobDataUrl = "/json/syncreply/Scheduler";
 
 	    //$(document).ready(function () { setInterval(reloadData, 2000); });
 	    $(document).ready(loadData);
 
+	    ko.bindingHandlers.jqTabs = {
+	        update: function (element, valueAccessor, allBindingsAccessor) {
+	            var dependency = ko.utils.unwrapObservable(valueAccessor()),
+                currentIndex = $(element).tabs("option", "selected") || 0,
+                config = ko.utils.unwrapObservable(allBindingsAccessor().jqTabOptions) || {};
+
+	            //alert(currentIndex);
+	            //make sure that elements are set from template before calling tabs API
+	            setTimeout(function () {
+	                $(element).tabs("destroy").tabs(config).tabs("option", "selected", currentIndex);
+	            }, 0);
+	        }
+	    };
+
+	    ko.bindingHandlers.accordion = {
+	        init: function (element, valueAccessor) {
+	            var options = valueAccessor() || {};
+	            setTimeout(function () {
+	                $(element).accordion(options);
+	            }, 0);
+
+	            //handle disposal (if KO removes by the template binding)
+	            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+	                $(element).accordion("destroy");
+	            });
+	        },
+	        update: function (element, valueAccessor) {
+	            var options = valueAccessor() || {};
+	            var currentIndex = $(element).accordion("option", "active");
+
+	            //alert(currentIndex.toString());
+//	            for (i = 0; i < currentIndex.length; i++) {
+//	                console.log("log: " + currentIndex[i]);
+//	            }
+
+	            //TODO: not sure why this doesn't work, to capture and reset the active accordian element
+//	            var options = { active: currentIndex, collapsible: true };
+	            //	            setTimeout(function () {
+	            //	                $(element).accordion("destroy").accordion("option", "active", 2);
+	            //	            }, 0);
+
+	            $(element).accordion("destroy").accordion(options);
+	        }
+	    }
+
+
 	    function loadData() {
 	        $.getJSON(jobDataUrl, function (data) {
-	            viewModel = { JobGroups: ko.observable(data.JobGroups) };
+	            //viewModel = { JobGroups: ko.observableArray(data.JobGroups) };
+	            viewModel.JobGroups = ko.observableArray(data.JobGroups) 
 	            ko.applyBindings(viewModel);
-	            applyWidgits();
+	            //applyWidgits();
 	        });
 	    }
 
@@ -162,7 +222,6 @@
 
 	        $.getJSON(jobDataUrl, function (data) {
 	            viewModel.JobGroups(data.JobGroups);
-	            alert("pausing");
 	            //applyWidgits();
 	        });
 	        
@@ -170,29 +229,8 @@
 
         }
 
-        function pausecomp(millis) {
-            var date = new Date();
-            var curDate = null;
 
-            do { curDate = new Date(); }
-            while (curDate - date < millis);
-        }
 
-        //ko.applyBindings(viewModel);
-
-        ko.bindingHandlers.jqTabs = {
-            update: function (element, valueAccessor, allBindingsAccessor) {
-                var dependency = ko.utils.unwrapObservable(valueAccessor()),
-           currentIndex = $(element).tabs("option", "selected") || 0,
-           config = ko.utils.unwrapObservable(allBindingsAccessor().jqTabOptions) || {};
-                alert("unbinding");
-
-                //make sure that elements are set from template before calling tabs API
-                setTimeout(function () {
-                    $(element).tabs("destroy").tabs(config).tabs("option", "selected", currentIndex);
-                }, 0);
-            }
-        };
 
 	</script>	
 </body>
